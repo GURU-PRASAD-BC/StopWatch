@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <video id="background-video" autoplay loop muted>
+        <source src="bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     <div class="container">
-        <div class="wrapper">
+        <button class="btn-start-only" data-text="START">START</button>
+        <div class="wrapper hidden">
             <div class="cloak">
                 <p>
-                    <span class="hours">00</span>:<span class="mins">00</span>:<span class="seconds">00</span>:<span class="milliseconds">00</span>
+                    <span class="mins">00</span>:<span class="seconds">00</span>:<span class="milliseconds">00</span>
                 </p>
             </div>
             <button class="btn-start">Start</button>
@@ -21,7 +26,7 @@
             <div class="laps"></div>
         </div>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,74 +1,104 @@
-let milliseconds = 0;
 let seconds = 0;
 let mins = 0;
 let hours = 0;
-
-let getMilliseconds = document.querySelector('.milliseconds');
+let milliseconds = 0;
 let getSeconds = document.querySelector('.seconds');
-let getHours = document.querySelector('.hours');
 let getMins = document.querySelector('.mins');
+let getMilliseconds = document.querySelector('.milliseconds');
 let btnStart = document.querySelector('.btn-start');
 let btnStop = document.querySelector('.btn-stop');
 let btnReset = document.querySelector('.btn-reset');
 let btnLap = document.querySelector('.btn-lap');
 let lapsContainer = document.querySelector('.laps');
+let btnStartOnly = document.querySelector('.btn-start-only');
 let interval;
-let cloak = document.querySelector('.cloak');
 
-// Start Button Event Listener
+// Get video element
+let backgroundVideo = document.getElementById('background-video');
+
+// Show the wrapper with animation when the start button is pressed
+btnStartOnly.addEventListener('click', () => {
+    const wrapper = document.querySelector('.wrapper');
+    wrapper.classList.add('visible'); // Add visible class to show the wrapper
+    btnStartOnly.style.display = 'none'; // Hide the start button after clicking
+    // startTimer(); // Start the timer immediately
+});
+
+// Start button functionality
 btnStart.addEventListener('click', () => {
-    clearInterval(interval); // Clear previous interval
-    interval = setInterval(startTimer, 10); // Start timer with milliseconds precision
-    cloak.classList.add('running'); // Green shadow when running
+    clearInterval(interval);
+    document.querySelector('.cloak').classList.add('running'); // Add running class
+    backgroundVideo.play(); // Start playing the video
+    interval = setInterval(startTimer, 10);
 });
 
-// Stop Button Event Listener
+// Stop button functionality
 btnStop.addEventListener('click', () => {
-    clearInterval(interval); // Stop the timer
-    cloak.classList.remove('running'); // Red shadow when stopped
+    clearInterval(interval);
+    document.querySelector('.cloak').classList.remove('running'); // Remove running class
+    backgroundVideo.pause(); // Pause the video
 });
 
-// Reset Button Event Listener
+// Reset button functionality
 btnReset.addEventListener('click', () => {
-    clearInterval(interval); // Stop the timer
-    hours = 0; mins = 0; seconds = 0; milliseconds = 0; // Reset time
-    updateDisplay(); // Update the display to 00:00:00:00
-    lapsContainer.innerHTML = ''; // Clear all laps
-    cloak.classList.remove('running'); // Red shadow when reset
+    clearInterval(interval);
+    lapsContainer.innerHTML = '';
+    document.querySelector('.cloak').classList.remove('running');
+    // backgroundVideo.currentTime = 0; // Reset video to start
+    backgroundVideo.pause(); 
+    resetTimer(); // Reset the timer and clear laps
 });
 
-// Lap Button Event Listener
+// Lap button functionality
 btnLap.addEventListener('click', () => {
-    let lapTime = `${getHours.innerHTML}:${getMins.innerHTML}:${getSeconds.innerHTML}:${getMilliseconds.innerHTML}`;
-    let lapElement = document.createElement('p');
-    lapElement.textContent = `Lap: ${lapTime}`;
-    lapsContainer.appendChild(lapElement);
+    recordLap();
 });
 
-// Timer Function
+// Timer function
 function startTimer() {
-    milliseconds++;
-    if (milliseconds > 99) {
-        seconds++;
+    milliseconds += 10; // Increase milliseconds by 10
+    if (milliseconds >= 1000) { 
+        seconds++; 
         milliseconds = 0;
     }
-    if (seconds > 59) {
-        mins++;
-        seconds = 0;
+    if (seconds >= 60) { 
+        mins++; 
+        seconds = 0; 
     }
-    if (mins > 59) {
-        hours++;
-        mins = 0;
-        // Remove milliseconds when hours are present
-        getMilliseconds.style.display = 'none';
+    if (mins >= 60) { 
+        hours++; 
+        mins = 0; 
     }
-    updateDisplay(); // Update time on display
+
+    // Display time
+    getMilliseconds.innerHTML = ('0' + Math.floor(milliseconds / 10)).slice(-2); // Format milliseconds
+    getSeconds.innerHTML = ('0' + seconds).slice(-2); // Format seconds
+    getMins.innerHTML = ('0' + mins).slice(-2); // Format minutes
+
+    // If hours are greater than 0, display it
+    if (hours > 0) {
+        getHours.innerHTML = ('0' + hours).slice(-2) + ':'; // Format hours
+    } else {
+        getHours.innerHTML = ''; // Hide hours if 0
+    }
 }
 
-// Update the Display Function
-function updateDisplay() {
-    getMilliseconds.innerHTML = milliseconds < 10 ? '0' + milliseconds : milliseconds;
-    getSeconds.innerHTML = seconds < 10 ? '0' + seconds : seconds;
-    getMins.innerHTML = mins < 10 ? '0' + mins : mins;
-    getHours.innerHTML = hours < 10 ? '0' + hours : hours;
+// Reset timer function
+function resetTimer() {
+    hours = 0;
+    mins = 0;
+    seconds = 0;
+    milliseconds = 0;
+    getSeconds.innerHTML = '00';
+    getMins.innerHTML = '00';
+    getMilliseconds.innerHTML = '00';
+    getHours.innerHTML = ''; // Hide hours
+}
+
+// Record lap function
+function recordLap() {
+    const lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;
+    const lapElement = document.createElement('p');
+    lapElement.innerText = `Lap: ${lapTime}`;
+    lapsContainer.appendChild(lapElement);
 }
