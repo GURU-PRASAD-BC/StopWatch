@@ -13,19 +13,18 @@ let btnReset = document.querySelector('.btn-reset');
 let btnLap = document.querySelector('.btn-lap');
 let lapsContainer = document.querySelector('.laps');
 let interval;
-let cloak = document.querySelector('.cloak');
+let clock = document.querySelector('.clock'); 
 
-// Start Button Event Listener
 btnStart.addEventListener('click', () => {
     clearInterval(interval); // Clear previous interval
     interval = setInterval(startTimer, 10); // Start timer with milliseconds precision
-    cloak.classList.add('running'); // Green shadow when running
+    clock.classList.add('running'); // Light shadow when running
 });
 
 // Stop Button Event Listener
 btnStop.addEventListener('click', () => {
     clearInterval(interval); // Stop the timer
-    cloak.classList.remove('running'); // Red shadow when stopped
+    clock.classList.remove('running'); // Remove shadow when stopped
 });
 
 // Reset Button Event Listener
@@ -34,15 +33,16 @@ btnReset.addEventListener('click', () => {
     hours = 0; mins = 0; seconds = 0; milliseconds = 0; // Reset time
     updateDisplay(); // Update the display to 00:00:00:00
     lapsContainer.innerHTML = ''; // Clear all laps
-    cloak.classList.remove('running'); // Red shadow when reset
+    clock.classList.remove('running'); // Remove shadow when reset
 });
 
 // Lap Button Event Listener
 btnLap.addEventListener('click', () => {
     let lapTime = `${getHours.innerHTML}:${getMins.innerHTML}:${getSeconds.innerHTML}:${getMilliseconds.innerHTML}`;
     let lapElement = document.createElement('p');
-    lapElement.textContent = `Lap: ${lapTime}`;
+    lapElement.textContent = `🏁: ${lapTime}`;
     lapsContainer.appendChild(lapElement);
+    lapsContainer.scrollTop = lapsContainer.scrollHeight;
 });
 
 // Timer Function

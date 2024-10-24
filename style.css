@@ -1,13 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
 * {
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
     box-sizing: border-box;
 }
-body {
-    background-color: #6b6be4;
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Places the video behind other elements */
 }
+
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video covers the entire background */
+}
+
 .container {
     height: 100vh;
     width: 100%;
@@ -15,61 +27,72 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .wrapper {
     position: relative;
     text-align: center;
-    background-color: #e2e2ee;
-    padding: 30px;
+    background-color: #FFFFFF; /* White background for wrapper */
+    padding: 50px;
     border-radius: 20px;
-    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 0px 10px 20px rgb(15, 14, 14); /* Dark shadow */
 }
-.cloak {
+
+.clock { /* Stopwatch circle */
     position: relative;
     width: 250px;
     height: 250px;
     border-radius: 50%;
-    background-color: #9c9cf7;
+    background-color: #FFFFFF; /* White circle */
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 50px;
-    box-shadow: 0px 0px 32px -12px red;
+    margin: 0 auto; /* Center the circle */
+    box-shadow: 0px 0px 32px 5px rgba(0, 0, 0, 0.5); /* Dark shadow */
     transition: box-shadow 0.3s ease;
+    margin-bottom: 70px; /* Increased gap below the circle */
 }
-.cloak.running {
-    box-shadow: 0px 0px 32px 5px green;
+
+.clock.running {
+    box-shadow: 0px 0px 32px 10px rgba(255, 255, 255, 0.5); /* Light shadow when running */
 }
+
 .wrapper p {
-    color: #ffffff;
     font-size: 36px;
 }
+
 button {
-    background-color: #222242;
+    background-color: #000000; /* Black background for buttons */
     padding: 12px 40px;
-    border: 1px solid #A9A9A9;
+    border: 1px solid #000000; /* Black border */
     border-radius: 28px;
-    color: #fff;
+    color: #FFFFFF; /* White text */
     transition: all .2s ease;
     outline: 0;
     font-size: 16px;
     cursor: pointer;
 }
+
 button:not(:last-child) {
     margin-right: 20px;
 }
+
 button:hover,
 button:focus {
-    border-color: #F6B400;
-    color: #F6B400;
-    box-shadow: 0px 4px 27px -12px #F6B400;
+    background-color: #FFFFFF; /* White background on hover */
+    color: #000000; /* Black text on hover */
+    box-shadow: 0px 4px 27px -12px rgba(0, 0, 0, 0.5); /* Dark shadow on hover */
 }
+
 .laps {
     margin-top: 20px;
-    color: white;
-    max-height: 150px;
-    overflow-y: auto;
+    color: #000000; /* Black color for lap text */
+    max-height: 30px;
+    overflow-y:auto;
+    scroll-behavior: smooth;
 }
+
 .laps p {
     margin: 5px 0;
     font-size: 16px;
+    color: #000000; /* Black color for lap entries */
 }
