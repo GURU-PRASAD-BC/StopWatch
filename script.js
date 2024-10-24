@@ -12,6 +12,7 @@ let btnLap = document.querySelector('.btn-lap');
 let lapsContainer = document.querySelector('.laps');
 let btnStartOnly = document.querySelector('.btn-start-only');
 let interval;
+let lapcount=1;
 
 // Get video element
 let backgroundVideo = document.getElementById('background-video');
@@ -89,6 +90,7 @@ function resetTimer() {
     mins = 0;
     seconds = 0;
     milliseconds = 0;
+    lapcount=1;
     getSeconds.innerHTML = '00';
     getMins.innerHTML = '00';
     getMilliseconds.innerHTML = '00';
@@ -99,6 +101,6 @@ function resetTimer() {
 function recordLap() {
     const lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;
     const lapElement = document.createElement('p');
-    lapElement.innerText = `Lap: ${lapTime}`;
+    lapElement.innerText = `Lap ${lapcount++} : ${lapTime}`;
     lapsContainer.appendChild(lapElement);
 }
