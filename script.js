@@ -10,6 +10,7 @@ let btnStart = document.querySelector('.btn-start');
 let btnStop = document.querySelector('.btn-stop');
 let btnReset = document.querySelector('.btn-reset');
 let btnLap = document.querySelector('.btn-lap');
+let btnExport = document.querySelector('.btn-export');
 let lapsContainer = document.querySelector('.laps');
 let btnStartOnly = document.querySelector('.btn-start-only');
 let interval;
@@ -37,6 +38,7 @@ let wrapper = document.querySelector('.wrapper');
 if (localStorage.getItem('lapsData') || localStorage.getItem('timerData')) {
     // Make wrapper visible directly if data is present
     wrapper.classList.add('visible');
+    btnExport.style.display = 'block'; //show export
     btnStartOnly.style.display = 'none'; // Hide the initial start button
 }
 
@@ -94,10 +96,13 @@ btnReset.addEventListener('click', () => {
     localStorage.removeItem('lapsData');
     localStorage.removeItem('timerData');
     lapcount = 1; // Reset lap counter to start from 1
+
+    btnExport.style.display = 'none';    //hide export
 });
 
 // Lap button functionality
 btnLap.addEventListener('click', () => {
+    btnExport.style.display = 'block';  //show export
     recordLap();
 });
 
@@ -197,4 +202,28 @@ function recordLap() {
     lapElement.innerText = `Lap ${lapcount++} : ${lapTime}`;
     lapsContainer.appendChild(lapElement);
     lapsContainer.scrollTop = lapsContainer.scrollHeight;
+}
+
+// Add event listener to export lap times as CSV
+btnExport.addEventListener('click', exportLapsAsCSV);
+
+// Function to export laps as a CSV file
+function exportLapsAsCSV() {
+    // Prepare CSV content with headers
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Lap Number,Lap Time\n"; // Add headers
+
+    // Add each lap time to CSV content
+    lapsData.forEach((lap, index) => {
+        csvContent += `Lap ${index + 1},${lap}\n`;
+    });
+
+    // Create a download link and trigger the download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "lap_times.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Remove link after download
 }

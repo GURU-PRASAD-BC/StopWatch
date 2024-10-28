@@ -46,6 +46,10 @@ body {
     .laps p {
         font-size: 16px; /* Smaller font for lap times */
     }
+    .btn-export {
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
 }
 
 /* Even smaller screens - extra small mobile */
@@ -53,15 +57,16 @@ body {
     .wrapper {
         width: 90%;
         padding: 15px;
+        max-height: 95%;
     }
 
     .cloak {
-        width: 150px;
-        height: 150px;
+        width: 120px;
+        height: 120px;
     }
 
     .cloak p {
-        font-size: 24px; /* Further reduce font size */
+        font-size: 22px; /* Further reduce font size */
     }
 
     button {
@@ -77,11 +82,15 @@ body {
     }
 
     .laps {
-        max-height: 80px;
+        max-height: 35px;
     }
 
     .laps p {
-        font-size: 14px;
+        font-size: 10px;
+    }
+    .btn-export {
+        padding: 4px 8px;
+        font-size: 0.6em;
     }
 }
 
@@ -190,6 +199,24 @@ button {
     font-weight: bold;
     cursor: pointer;
 }
+
+.btn-export {
+    display: none; /* Hidden initially */
+    padding: 8px 15px;
+    font-size: 0.9em;
+    margin: 15px auto 0 auto; 
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.btn-export:hover {
+    background-color: green;
+}
+
 
 button:not(:last-child) {
     margin-right: 20px;
