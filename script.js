@@ -93,7 +93,7 @@ document.addEventListener('keydown', (event) => {
 
 
 
-// Timer function
+//Btn press functionality
 function startTimer() {
     milliseconds += 10; // Increase milliseconds by 10
     if (milliseconds >= 1000) { 
