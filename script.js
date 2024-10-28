@@ -4,6 +4,7 @@ let hours = 0;
 let milliseconds = 0;
 let getSeconds = document.querySelector('.seconds');
 let getMins = document.querySelector('.mins');
+let getHours = document.querySelector('.hours');    
 let getMilliseconds = document.querySelector('.milliseconds');
 let btnStart = document.querySelector('.btn-start');
 let btnStop = document.querySelector('.btn-stop');
@@ -78,9 +79,10 @@ function startTimer() {
 
     // If hours are greater than 0, display it
     if (hours > 0) {
+        getHours.style.display = 'inline'; // Show the hours span
         getHours.innerHTML = ('0' + hours).slice(-2) + ':'; // Format hours
     } else {
-        getHours.innerHTML = ''; // Hide hours if 0
+        getHours.style.display = 'none'; // Hide hours if 0
     }
 }
 
@@ -90,17 +92,20 @@ function resetTimer() {
     mins = 0;
     seconds = 0;
     milliseconds = 0;
-    lapcount=1;
+    lapcount = 1;
     getSeconds.innerHTML = '00';
     getMins.innerHTML = '00';
     getMilliseconds.innerHTML = '00';
-    getHours.innerHTML = ''; // Hide hours
+    getHours.style.display = 'none'; // Hide hours
 }
 
 // Record lap function
 function recordLap() {
-    const lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;
+    let lapTime;
+    if(hours>0) {lapTime = `${('0' + hours).slice(-2)}:${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;}
+    else {lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}` ;}
     const lapElement = document.createElement('p');
     lapElement.innerText = `Lap ${lapcount++} : ${lapTime}`;
     lapsContainer.appendChild(lapElement);
+    lapsContainer.scrollTop=lapsContainer.scrollHeight;
 }

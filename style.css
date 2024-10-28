@@ -12,6 +12,86 @@ body {
     color: #ffffff;
 }
 
+@media (max-width: 768px) {
+    .wrapper {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .cloak {
+        width: 200px;
+        height: 200px;
+    }
+
+    .cloak p {
+        font-size: 32px; /* Smaller font for mobile */
+    }
+
+    button {
+        padding: 10px 30px;
+        font-size: 18px;
+    }
+
+    .btn-start-only {
+        font-size: 32px;
+        padding: 10px 25px;
+        max-width: 150px;
+        margin-top: 200px; /* Adjust as needed */
+    }
+
+    .laps {
+        max-height: 100px; /* Less space for laps on small screens */
+    }
+
+    .laps p {
+        font-size: 16px; /* Smaller font for lap times */
+    }
+}
+
+/* Even smaller screens - extra small mobile */
+@media (max-width: 480px) {
+    .wrapper {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .cloak {
+        width: 150px;
+        height: 150px;
+    }
+
+    .cloak p {
+        font-size: 24px; /* Further reduce font size */
+    }
+
+    button {
+        margin: 5px;
+        padding: 8px 20px;
+        font-size: 16px;
+    }
+
+    .btn-start-only {
+        font-size: 28px;
+        padding: 8px 20px;
+        max-width: 120px;
+    }
+
+    .laps {
+        max-height: 80px;
+    }
+
+    .laps p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    video {
+        height: 100%;
+        width: auto; /* Maintain aspect ratio */
+    }
+}
+
 .container {
     height: 100vh;
     width: 100%;
