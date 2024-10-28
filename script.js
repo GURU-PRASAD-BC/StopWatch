@@ -14,6 +14,7 @@ let lapsContainer = document.querySelector('.laps');
 let btnStartOnly = document.querySelector('.btn-start-only');
 let interval;
 let lapcount=1;
+let run=false;
 
 // Get video element
 let backgroundVideo = document.getElementById('background-video');
@@ -32,6 +33,7 @@ btnStart.addEventListener('click', () => {
     document.querySelector('.cloak').classList.add('running'); // Add running class
     backgroundVideo.play(); // Start playing the video
     interval = setInterval(startTimer, 10);
+    run=true;
 });
 
 // Stop button functionality
@@ -39,6 +41,7 @@ btnStop.addEventListener('click', () => {
     clearInterval(interval);
     document.querySelector('.cloak').classList.remove('running'); // Remove running class
     backgroundVideo.pause(); // Pause the video
+    run=false;
 });
 
 // Reset button functionality
@@ -48,6 +51,7 @@ btnReset.addEventListener('click', () => {
     document.querySelector('.cloak').classList.remove('running');
     // backgroundVideo.currentTime = 0; // Reset video to start
     backgroundVideo.pause(); 
+    run=false;
     resetTimer(); // Reset the timer and clear laps
 });
 
@@ -55,6 +59,39 @@ btnReset.addEventListener('click', () => {
 btnLap.addEventListener('click', () => {
     recordLap();
 });
+
+// Add keydown event listener
+document.addEventListener('keydown', (event) => {
+    // Start/Stop functionality with Enter key
+    if (event.code === 'Enter') {
+        event.preventDefault(); // Prevent default behavior (like submitting forms)
+
+        if (btnStartOnly.style.display !== 'none') {
+            btnStartOnly.click(); // Reveal the stopwatch if initial Start is not clicked yet
+        } else {
+            // Toggle start/stop
+            if (run) {
+                btnStop.click(); // Stop the timer if running
+            } else {
+                btnStart.click(); // Start the timer if stopped
+            }
+        }
+    }
+
+    // Record a lap with Space key
+    if (event.code === 'Space') {
+        event.preventDefault(); // Prevent default scrolling
+        btnLap.click(); // Trigger lap button
+    }
+
+    // Reset the timer with Tab key
+    if (event.code === 'Tab') {
+        event.preventDefault(); // Prevent default tabbing behavior
+        btnReset.click(); // Trigger reset button
+    }
+});
+
+
 
 // Timer function
 function startTimer() {
