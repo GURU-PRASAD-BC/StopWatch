@@ -60,7 +60,7 @@ btnLap.addEventListener('click', () => {
     recordLap();
 });
 
-// Add keydown event listener
+//Btn pressing
 document.addEventListener('keydown', (event) => {
     // Start/Stop functionality with Enter key
     if (event.code === 'Enter') {
@@ -93,7 +93,7 @@ document.addEventListener('keydown', (event) => {
 
 
 
-//Btn press functionality
+// Timer function
 function startTimer() {
     milliseconds += 10; // Increase milliseconds by 10
     if (milliseconds >= 1000) { 
