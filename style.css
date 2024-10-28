@@ -58,15 +58,20 @@ body {
         width: 90%;
         padding: 15px;
         max-height: 95%;
+        display: flex; /* or display: grid; depending on your layout */
+        flex-direction: column; /* ensure it stacks vertically */
+        align-items: center; /* center children */
+        overflow: hidden; /* prevent overflow */
+        padding: 10px; /* adjust as necessary */
     }
 
     .cloak {
-        width: 120px;
-        height: 120px;
+        width: 80px;
+        height: 80px;
     }
 
     .cloak p {
-        font-size: 22px; /* Further reduce font size */
+        font-size: 20px; /* Further reduce font size */
     }
 
     button {
@@ -89,8 +94,10 @@ body {
         font-size: 10px;
     }
     .btn-export {
-        padding: 4px 8px;
-        font-size: 0.6em;
+        display: block; /* Show the button */
+        padding: 10px 5%; /* Adjust padding */
+        font-size: 0.8em; /* Slightly smaller font */
+        margin: 10px auto; /* Center with reduced margin */
     }
 }
 
@@ -211,6 +218,7 @@ button {
     cursor: pointer;
     border: none;
     transition: background-color 0.2s ease;
+    box-sizing: border-box; /* Prevents padding and borders from affecting width */
 }
 
 .btn-export:hover {

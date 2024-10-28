@@ -102,8 +102,10 @@ btnReset.addEventListener('click', () => {
 
 // Lap button functionality
 btnLap.addEventListener('click', () => {
-    btnExport.style.display = 'block';  //show export
-    recordLap();
+    if(milliseconds>1){
+        btnExport.style.display = 'block';  //show export
+        recordLap();
+    }
 });
 
 // Keydown event listeners for button functionalities
@@ -138,6 +140,12 @@ document.addEventListener('keydown', (event) => {
         event.preventDefault(); // Prevent default tabbing behavior
         btnReset.focus();
         btnReset.click(); // Trigger reset button
+    }
+
+    if (event.key === 'e' || event.key === 'E') {
+        if(lapsData.length>0){
+            btnExport.click(); // Trigger export button
+        }
     }
 });
 
