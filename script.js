@@ -32,12 +32,20 @@ if (storedTime) {
     updateDisplay(); // Update display with loaded values
 }
 
+let wrapper = document.querySelector('.wrapper');
+// Check if there is stored data in localStorage
+if (localStorage.getItem('lapsData') || localStorage.getItem('timerData')) {
+    // Make wrapper visible directly if data is present
+    wrapper.classList.add('visible');
+    btnStartOnly.style.display = 'none'; // Hide the initial start button
+}
+
 // Show the wrapper with animation when the start button is pressed
 btnStartOnly.addEventListener('click', () => {
-    const wrapper = document.querySelector('.wrapper');
     wrapper.classList.add('visible'); // Add visible class to show the wrapper
     btnStartOnly.style.display = 'none'; // Hide the start button after clicking
 });
+
 
 // Function to display laps from localStorage on page load
 function displayLapsFromStorage() {

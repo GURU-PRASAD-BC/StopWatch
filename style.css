@@ -51,7 +51,7 @@ body {
 /* Even smaller screens - extra small mobile */
 @media (max-width: 480px) {
     .wrapper {
-        width: 95%;
+        width: 90%;
         padding: 15px;
     }
 
