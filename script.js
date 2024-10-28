@@ -13,19 +13,44 @@ let btnLap = document.querySelector('.btn-lap');
 let lapsContainer = document.querySelector('.laps');
 let btnStartOnly = document.querySelector('.btn-start-only');
 let interval;
-let lapcount=1;
-let run=false;
+let run = false;
 
 // Get video element
 let backgroundVideo = document.getElementById('background-video');
+
+// Load laps from localStorage if available
+let lapsData = JSON.parse(localStorage.getItem('lapsData')) || [];
+let lapcount = lapsData.length + 1; // Set lapcount based on the number of laps in localStorage
+
+// Load timer values from localStorage if available
+const storedTime = JSON.parse(localStorage.getItem('timerData'));
+if (storedTime) {
+    hours = storedTime.hours;
+    mins = storedTime.mins;
+    seconds = storedTime.seconds;
+    milliseconds = storedTime.milliseconds;
+    updateDisplay(); // Update display with loaded values
+}
 
 // Show the wrapper with animation when the start button is pressed
 btnStartOnly.addEventListener('click', () => {
     const wrapper = document.querySelector('.wrapper');
     wrapper.classList.add('visible'); // Add visible class to show the wrapper
     btnStartOnly.style.display = 'none'; // Hide the start button after clicking
-    // startTimer(); // Start the timer immediately
 });
+
+// Function to display laps from localStorage on page load
+function displayLapsFromStorage() {
+    lapsContainer.innerHTML = ''; // Clear existing laps in UI
+    lapsData.forEach((lap, index) => {
+        const lapElement = document.createElement('p');
+        lapElement.innerText = `Lap ${index + 1} : ${lap}`;
+        lapsContainer.appendChild(lapElement);
+    });
+}
+
+// Call this function on page load to display stored laps
+displayLapsFromStorage();
 
 // Start button functionality
 btnStart.addEventListener('click', () => {
@@ -33,7 +58,7 @@ btnStart.addEventListener('click', () => {
     document.querySelector('.cloak').classList.add('running'); // Add running class
     backgroundVideo.play(); // Start playing the video
     interval = setInterval(startTimer, 10);
-    run=true;
+    run = true;
 });
 
 // Stop button functionality
@@ -41,7 +66,10 @@ btnStop.addEventListener('click', () => {
     clearInterval(interval);
     document.querySelector('.cloak').classList.remove('running'); // Remove running class
     backgroundVideo.pause(); // Pause the video
-    run=false;
+    run = false;
+
+    // Store the current timer values in localStorage
+    localStorage.setItem('timerData', JSON.stringify({ hours, mins, seconds, milliseconds }));
 });
 
 // Reset button functionality
@@ -49,10 +77,15 @@ btnReset.addEventListener('click', () => {
     clearInterval(interval);
     lapsContainer.innerHTML = '';
     document.querySelector('.cloak').classList.remove('running');
-    // backgroundVideo.currentTime = 0; // Reset video to start
     backgroundVideo.pause(); 
-    run=false;
+    run = false;
     resetTimer(); // Reset the timer and clear laps
+
+    // Clear laps data and timer from UI and localStorage
+    lapsData = [];
+    localStorage.removeItem('lapsData');
+    localStorage.removeItem('timerData');
+    lapcount = 1; // Reset lap counter to start from 1
 });
 
 // Lap button functionality
@@ -60,7 +93,7 @@ btnLap.addEventListener('click', () => {
     recordLap();
 });
 
-//Btn pressing
+// Keydown event listeners for button functionalities
 document.addEventListener('keydown', (event) => {
     // Start/Stop functionality with Enter key
     if (event.code === 'Enter') {
@@ -71,8 +104,10 @@ document.addEventListener('keydown', (event) => {
         } else {
             // Toggle start/stop
             if (run) {
+                btnStop.focus();
                 btnStop.click(); // Stop the timer if running
             } else {
+                btnStart.focus();
                 btnStart.click(); // Start the timer if stopped
             }
         }
@@ -81,17 +116,17 @@ document.addEventListener('keydown', (event) => {
     // Record a lap with Space key
     if (event.code === 'Space') {
         event.preventDefault(); // Prevent default scrolling
+        btnLap.focus();
         btnLap.click(); // Trigger lap button
     }
 
     // Reset the timer with Tab key
     if (event.code === 'Tab') {
         event.preventDefault(); // Prevent default tabbing behavior
+        btnReset.focus();
         btnReset.click(); // Trigger reset button
     }
 });
-
-
 
 // Timer function
 function startTimer() {
@@ -108,8 +143,11 @@ function startTimer() {
         hours++; 
         mins = 0; 
     }
+    updateDisplay(); // Update the timer display
+}
 
-    // Display time
+// Function to update the display with current timer values
+function updateDisplay() {
     getMilliseconds.innerHTML = ('0' + Math.floor(milliseconds / 10)).slice(-2); // Format milliseconds
     getSeconds.innerHTML = ('0' + seconds).slice(-2); // Format seconds
     getMins.innerHTML = ('0' + mins).slice(-2); // Format minutes
@@ -130,19 +168,25 @@ function resetTimer() {
     seconds = 0;
     milliseconds = 0;
     lapcount = 1;
-    getSeconds.innerHTML = '00';
-    getMins.innerHTML = '00';
-    getMilliseconds.innerHTML = '00';
-    getHours.style.display = 'none'; // Hide hours
+    updateDisplay();
 }
 
 // Record lap function
 function recordLap() {
     let lapTime;
-    if(hours>0) {lapTime = `${('0' + hours).slice(-2)}:${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;}
-    else {lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}` ;}
+    if (hours > 0) {
+        lapTime = `${('0' + hours).slice(-2)}:${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;
+    } else {
+        lapTime = `${('0' + mins).slice(-2)}:${('0' + seconds).slice(-2)}:${('0' + Math.floor(milliseconds / 10)).slice(-2)}`;
+    }
+
+    // Store lap in the array and localStorage
+    lapsData.push(lapTime);
+    localStorage.setItem('lapsData', JSON.stringify(lapsData));
+
+    // Display lap in UI
     const lapElement = document.createElement('p');
     lapElement.innerText = `Lap ${lapcount++} : ${lapTime}`;
     lapsContainer.appendChild(lapElement);
-    lapsContainer.scrollTop=lapsContainer.scrollHeight;
+    lapsContainer.scrollTop = lapsContainer.scrollHeight;
 }
